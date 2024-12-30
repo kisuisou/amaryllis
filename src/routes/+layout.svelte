@@ -3,21 +3,28 @@
 </script>
 
 <div class="footer-fixed">
-    <nav class="navbar bg-light">
+    <nav class="navbar bg-light navbar-expand-lg">
         <div class="container-fluid">
-            <a href="#" class="navbar-brand my-navbar-brand">Amaryllis</a>
+            <a href="/" class="navbar-brand my-navbar-brand">Amaryllis</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <a href="/signin" class="nav-link">SignIn</a>
+                  </li>
+               </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-xl">
         {@render children()}
     </div>
 
-    <footer class="footer bg-light">
-        <div class="container-fluid">
-           <span class="text-secondary">Powered by <a href="https://kit.svelte.dev/">SvelteKit</a> </span>
-        </div>
-    </footer>
+    <div class="container-fluid">
+        <footer class="footer bg-light">
+           <p class="text-secondary">Powered by <a href="https://kit.svelte.dev/">SvelteKit</a> </p>
+        </footer>
+    </div>
 </div>
 
 <style>
@@ -35,5 +42,7 @@
     footer {
         position: absolute;
         bottom: 0;
+        width: 100%;
+        height: 60px;
     }
 </style>
