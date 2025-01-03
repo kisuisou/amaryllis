@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
   import { PUBLIC_API_ORIGIN } from "$env/static/public";
+    import { user_id } from "../../stores";
 
   let req = {"user_id": "", "password": ""}
   
@@ -11,12 +13,15 @@
      headers: {
       "Content-Type": "application/json"
      },
-     body: JSON.stringify(req)
+      body: JSON.stringify(req)
     });
-    return signin_result.status;
+    if(signin_result.status == 200){
+      $user_id = req.user_id
+      goto("/book-shelf")
+    }
   }
 
-  let promise: Promise<number>
+  let promise: Promise<void>
 </script>
 
 
