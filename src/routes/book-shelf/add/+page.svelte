@@ -6,10 +6,11 @@ import { SvelteToast, toast } from '@zerodevx/svelte-toast'
 
 
 let isbn = ""
-let books: Array<{[key: string]: string | number }> = []
+let books: Array<{[key: string]: any}> = []
 
 let isbn_input:HTMLInputElement
-let promise: Promise<void>
+let fetch_promise: Promise<void>
+let register_promise: Promise<void>
 
 onMount(() => {
     isbn_input.focus()
@@ -24,11 +25,12 @@ const bookDataFetch = async () => {
             "Content-Type": "application/json"
         },
     })
-    books.push(await req.json())
+    let data = await req.json()
+    books.push(data)
     books = books
 }
 
-const registerBook = async (book: {[key: string]: string | number}) => {
+const registerBook = async (book: {[key: string]: any}) => {
     const req = await fetch(PUBLIC_API_ORIGIN + "/user_books", {
         method: "POST",
         mode: "cors",
@@ -36,7 +38,7 @@ const registerBook = async (book: {[key: string]: string | number}) => {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(book)
+        body: JSON.stringify({isbn: book.ISBN, is_read: book.is_read})
     })
     return req.status
 }
@@ -69,7 +71,7 @@ const registerBooks = async () => {
 }
 
 const getBookData = () => {
-    promise = bookDataFetch()
+    fetch_promise = bookDataFetch()
     isbn = ""
     setTimeout(() => isbn_input.focus(), 100)
 }
@@ -82,21 +84,14 @@ const deleteBookData = (isbn: string) => {
 
 
 <SvelteToast />
-<div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        Hello, world! This is a toast message.
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  </div>
+
 <div class="w-50 mx-auto">
     <form class="mx-auto">
         <h2 class="mt-2">Please Input ISBN</h2>
         <div class="mb-3 input-group">
             <input type="text" class="form-control" id="isbn_input" placeholder="ISBN" bind:value={isbn} bind:this={isbn_input}>
                 <button class="btn btn-primary my-btn" type="submit" id="button-addon2" on:click={getBookData} disabled={isbn == ""}>
-                    {#await promise}
+                    {#await fetch_promise}
                         <span class="spinner-border spinner-border-sm my-spinner" role="status" aria-hidden="true"></span>
                     {:then _} 
                         <span style="color: #DB7093;">Submit</span>
@@ -108,13 +103,17 @@ const deleteBookData = (isbn: string) => {
     {#each books as book}
             <Bookcard isbn={String(book.ISBN)} title={String(book.Title)} creator={String(book.Creator)} 
             volume={String(book.Volume)} publisher={String(book.Publisher)} pubyear={Number(book.PubYear)}
-            delFunc={deleteBookData}/>
+            bind:is_read={book.is_read} delFunc={deleteBookData}/>
     {/each}
 
     {#if books.length != 0}
-    <button class="btn my-btn" on:click={registerBooks}>
-        <span class="my-text">Register</span>
-    </button>
+        <button class="btn my-btn" on:click={registerBooks}>
+            {#await register_promise}
+                <span class="spinner-border spinner-border-sm my-spinner" role="status" aria-hidden="true"></span>
+            {:then _} 
+                <span class="my-text">Register</span>
+            {/await}
+        </button>
     {/if}
 </div>
 

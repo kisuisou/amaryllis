@@ -7,7 +7,9 @@
     export let volume = ""
     export let publisher = ""
     export let pubyear = 0;
+    export let is_read: boolean = false;
     export let delFunc: (isbn: string) => void
+
 </script>
 <div class="card mb-3 mx-auto">
     <div class="row g-0">
@@ -20,7 +22,7 @@
                 <p class="card-text">{creator}</p>
                 <p class="card-text">{publisher} {pubyear}</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="read-check">
+                    <input class="form-check-input" type="checkbox" bind:checked={is_read} id="read-check">
                     <label class="form-check-label" for="read-check">
                        Read 
                     </label>
