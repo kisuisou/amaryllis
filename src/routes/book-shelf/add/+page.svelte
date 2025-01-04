@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { PUBLIC_API_ORIGIN } from "$env/static/public";
-    import { onMount, tick } from "svelte";
-    import Bookcard from "./bookcard.svelte";
+import { PUBLIC_API_ORIGIN } from "$env/static/public";
+import { onMount, tick } from "svelte";
+import Bookcard from "./bookcard.svelte";
+import { SvelteToast, toast } from '@zerodevx/svelte-toast'
 
 
 let isbn = ""
@@ -41,9 +42,29 @@ const registerBook = async (book: {[key: string]: string | number}) => {
 }
 
 const registerBooks = async () => {
+    let i = 0;
     for(let book of books) {
         let status = await registerBook(book)
-        console.log(status)
+        if(status == 409){
+            let msg = `${book.Title}${book.Volume == 0 ? "" : book.Volume}は既に登録された書籍です`
+            toast.push(msg, {
+            theme: {
+                 '--toastBarBackground': "#DB7093",
+                 '--toastWidth': `${msg.length}rem`
+            }})
+        }
+        if(status == 201){
+            i++;
+        }
+        books = books.filter(b => b != book)
+    }
+    if(i != 0){
+        let msg = `${i}件の書籍が登録されました`
+        toast.push(msg, {
+        theme: {
+                '--toastBarBackground': "#DB7093",
+                '--toastWidth': `${msg.length}rem`
+        }})
     }
 }
 
@@ -57,9 +78,18 @@ const deleteBookData = (isbn: string) => {
     books = books.filter(b => b.ISBN != isbn)
 }
 
-
 </script>
 
+
+<SvelteToast />
+<div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
 <div class="w-50 mx-auto">
     <form class="mx-auto">
         <h2 class="mt-2">Please Input ISBN</h2>
