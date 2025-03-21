@@ -70,6 +70,10 @@ const registerBooks = async () => {
     }
 }
 
+const register = () => {
+    register_promise = registerBooks()
+}
+
 const getBookData = () => {
     fetch_promise = bookDataFetch()
     isbn = ""
@@ -107,7 +111,7 @@ const deleteBookData = (isbn: string) => {
     {/each}
 
     {#if books.length != 0}
-        <button class="btn my-btn" on:click={registerBooks}>
+        <button class="btn my-btn" on:click={register}>
             {#await register_promise}
                 <span class="spinner-border spinner-border-sm my-spinner" role="status" aria-hidden="true"></span>
             {:then _} 
