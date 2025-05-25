@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                   <li class="nav-item">
-                    <a href="/signin" class="nav-link">SignIn</a>
+                    <a href="/signin" class="nav-link" style="color: #DB7093;">SignIn</a>
                   </li>
                </ul>
             </div>
