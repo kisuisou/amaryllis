@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-  import { PUBLIC_API_ORIGIN } from "$env/static/public";
+    import { PUBLIC_API_ORIGIN } from "$env/static/public";
     import { user_id } from "../../stores";
 
   let req = {"user_id": "", "password": ""}

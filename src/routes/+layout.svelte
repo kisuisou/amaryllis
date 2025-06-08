@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { user_id } from '../stores';
     const { children } = $props();
 </script>
 
@@ -8,9 +9,15 @@
             <a href="/" class="navbar-brand my-navbar-brand">Amaryllis</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                {#if $user_id != ""}
                   <li class="nav-item">
                     <a href="/signin" class="nav-link" style="color: #DB7093;">SignIn</a>
                   </li>
+                {:else}
+                  <li class="nav-item">
+                    <a href="/book-shelf" class="nav-link" style="color: #DB7093;">Book Shelf</a>
+                  </li>
+                {/if}
                </ul>
             </div>
         </div>
