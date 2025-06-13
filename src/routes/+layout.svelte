@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { user_id } from '../stores';
+    import { user_id } from "../stores";
     const { children } = $props();
 </script>
 
@@ -9,16 +9,24 @@
             <a href="/" class="navbar-brand my-navbar-brand">Amaryllis</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                {#if $user_id != ""}
-                  <li class="nav-item">
-                    <a href="/signin" class="nav-link" style="color: #DB7093;">SignIn</a>
-                  </li>
-                {:else}
-                  <li class="nav-item">
-                    <a href="/book-shelf" class="nav-link" style="color: #DB7093;">Book Shelf</a>
-                  </li>
-                {/if}
-               </ul>
+                    {#if $user_id != ""}
+                        <li class="nav-item">
+                            <a
+                                href="/signin"
+                                class="nav-link"
+                                style="color: #DB7093;">SignIn</a
+                            >
+                        </li>
+                    {:else}
+                        <li class="nav-item">
+                            <a
+                                href="/book-shelf"
+                                class="nav-link"
+                                style="color: #DB7093;">Book Shelf</a
+                            >
+                        </li>
+                    {/if}
+                </ul>
             </div>
         </div>
     </nav>
@@ -29,14 +37,16 @@
 
     <div class="container-fluid">
         <footer class="footer bg-light">
-           <p class="text-secondary">Powered by <a href="https://kit.svelte.dev/">SvelteKit</a> </p>
+            <p class="text-secondary">
+                Powered by <a href="https://kit.svelte.dev/">SvelteKit</a>
+            </p>
         </footer>
     </div>
 </div>
 
 <style>
-    .my-navbar-brand{
-        color: #DB7093;
+    .my-navbar-brand {
+        color: #db7093;
         font-size: 1.6rem;
     }
     .footer-fixed {
