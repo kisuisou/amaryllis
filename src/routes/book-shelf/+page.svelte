@@ -5,16 +5,15 @@
     import BookThmbnail from "./book_thmbnail.svelte";
     import { user_id } from "../../stores";
     interface Props {
-        data: { user_id: string };
+        data: { user_id: string; page_num_now: number; sort_order: string };
     }
 
     let { data }: Props = $props();
 
     let books: { [key: string]: any }[] = $state([]);
     let books_sorted: Map<any, { [key: string]: any }[]> = $state(new Map());
-    let sort_order: string = $state("1");
-    let is_ready: boolean = $state(false);
-    let page_num_now = $state(1);
+    let sort_order: string = $state(data.sort_order);
+    let page_num_now = $state(data.page_num_now);
     let page_num_total = $state(1);
     let is_loading = $state(true);
     const page_standard_val = 10;
@@ -28,6 +27,8 @@
         books = await req.json();
         is_loading = false;
     };
+
+    onMount(() => getUserBooks(data.user_id));
 
     $effect(() => {
         selectMode(sort_order);
@@ -91,19 +92,6 @@
             history.replaceState(history.state, "", page.url);
         }
     };
-
-    onMount(() => {
-        const urlSearchParams = page.url.searchParams;
-        let order = urlSearchParams.get("sort_order");
-        let page_num_tmp = urlSearchParams.get("page_num");
-        if (order != undefined) {
-            sort_order = order;
-        }
-        if (page_num_tmp != undefined) {
-            page_num_now = Number(page_num_tmp);
-        }
-        getUserBooks(data.user_id);
-    });
 
     const selectPage = (p: number) => {
         page_num_now = p;
