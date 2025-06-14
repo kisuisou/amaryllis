@@ -25,6 +25,7 @@
             },
         });
         let data = await req.json();
+        data.is_read = false;
         books.push(data);
         books = books;
     };
